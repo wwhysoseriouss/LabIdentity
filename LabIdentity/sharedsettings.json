@@ -1,0 +1,8 @@
+{
+  "App": {
+    "ApplicationName": "LabIdentity Polling"
+  },
+  "Polling": {
+    "MaxOptionsPerPoll": 6
+  }
+}

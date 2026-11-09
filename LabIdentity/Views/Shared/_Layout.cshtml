@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@inject LabIdentity.Configuration.LabSettings SharedSettings
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -38,9 +39,21 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - LabIdentity - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+        @{
+            var applicationName = ViewData["FooterApplicationName"] as string
+            ?? SharedSettings.App.ApplicationName;
+
+            var maxOptionsPerPoll = ViewData["FooterMaxOptionsPerPoll"] is int limit
+            ? limit
+            : SharedSettings.Polling.MaxOptionsPerPoll;
+        }
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2026 · @applicationName · До @maxOptionsPerPoll варіантів відповіді ·
+                <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

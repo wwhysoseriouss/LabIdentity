@@ -7,7 +7,6 @@ namespace LabData.Data;
 public class ApplicationUser : IdentityUser
 {
     public ICollection<Vote> Votes { get; set; } = new List<Vote>();
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
 }
