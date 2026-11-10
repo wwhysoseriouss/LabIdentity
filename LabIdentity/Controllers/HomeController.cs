@@ -3,6 +3,7 @@ using LabData.Models;
 using LabIdentity.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LabIdentity.Controllers;
 
@@ -27,12 +28,31 @@ public class HomeController : Controller
         base.OnActionExecuting(context);
     }
 
+    [AllowAnonymous]
     public IActionResult Index()
     {
         return View();
     }
 
     public IActionResult Privacy()
+    {
+        return View();
+    }
+
+    [Authorize(Policy = "VerifiedClient")]
+    public IActionResult Archive()
+    {
+        return View();
+    }
+    
+    [Authorize(Policy = "PremiumAccess")]
+    public IActionResult Premium()
+    {
+        return View();
+    }
+    
+    [Authorize(Policy = "ForumAccess")]
+    public IActionResult Forum()
     {
         return View();
     }

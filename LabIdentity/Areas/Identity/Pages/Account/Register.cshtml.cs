@@ -18,6 +18,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using LabData.Data;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace LabIdentity.Areas.Identity.Pages.Account;
 
@@ -29,13 +32,15 @@ public class RegisterModel : PageModel
     private readonly IUserEmailStore<ApplicationUser> _emailStore;
     private readonly ILogger<RegisterModel> _logger;
     private readonly IEmailSender _emailSender;
+    private readonly IWebHostEnvironment _environment;
 
     public RegisterModel(
         UserManager<ApplicationUser> userManager,
         IUserStore<ApplicationUser> userStore,
         SignInManager<ApplicationUser> signInManager,
         ILogger<RegisterModel> logger,
-        IEmailSender emailSender)
+        IEmailSender emailSender,
+        IWebHostEnvironment environment)
     {
         _userManager = userManager;
         _userStore = userStore;
@@ -43,6 +48,7 @@ public class RegisterModel : PageModel
         _signInManager = signInManager;
         _logger = logger;
         _emailSender = emailSender;
+        _environment = environment;
     }
 
     /// <summary>
@@ -121,6 +127,19 @@ public class RegisterModel : PageModel
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
+
+                if (_environment.IsDevelopment())
+                {
+                    var claimResult = await _userManager.AddClaimAsync(
+                        user,
+                        new Claim("IsVerifiedClient", "true"));
+
+                    if (!claimResult.Succeeded)
+                    {
+                        _logger.LogWarning(
+                            "Could not add IsVerifiedClient to user {UserId}.", user.Id);
+                    }
+                }
 
                 var userId = await _userManager.GetUserIdAsync(user);
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

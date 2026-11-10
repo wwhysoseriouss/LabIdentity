@@ -1,0 +1,18 @@
+﻿@model LabIdentity.Controllers.PollDraftsController.DraftForm
+
+@{
+    var isEdit = ViewContext.RouteData.Values["action"]?.ToString() == "Edit";
+    ViewData["Title"] = isEdit ? "Редагування чернетки" : "Нова чернетка";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post" asp-antiforgery="true">
+    <div class="mb-3">
+        <label asp-for="Question">Питання голосування</label>
+        <input asp-for="Question" class="form-control" />
+        <span asp-validation-for="Question" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Зберегти</button>
+</form>

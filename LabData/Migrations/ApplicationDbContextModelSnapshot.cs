@@ -153,6 +153,29 @@ namespace LabData.Migrations
                     b.ToTable("PollCategories");
                 });
 
+            modelBuilder.Entity("LabData.Models.PollDraft", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Question")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("PollDrafts");
+                });
+
             modelBuilder.Entity("LabData.Models.PollOption", b =>
                 {
                     b.Property<int>("Id")
@@ -398,6 +421,17 @@ namespace LabData.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Survey");
+                });
+
+            modelBuilder.Entity("LabData.Models.PollDraft", b =>
+                {
+                    b.HasOne("LabData.Data.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("LabData.Models.PollOption", b =>

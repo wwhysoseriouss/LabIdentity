@@ -12,10 +12,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<PollOption> PollOptions => Set<PollOption>();
     public DbSet<Vote> Votes => Set<Vote>();
     public DbSet<PollCategory> PollCategories => Set<PollCategory>();
+    public DbSet<PollDraft> PollDrafts => Set<PollDraft>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<PollDraft>()
+            .HasOne(draft => draft.Author)
+            .WithMany()
+            .HasForeignKey(draft => draft.AuthorId);
 
         modelBuilder.Entity<Poll>()
             .HasOne(poll => poll.Survey)
