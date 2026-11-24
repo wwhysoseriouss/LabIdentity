@@ -59,7 +59,9 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 
 builder.Services
     .AddControllersWithViews()
-    .AddViewLocalization(); 
+    .AddViewLocalization()
+    .AddDataAnnotationsLocalization(); 
+
 builder.Services.AddAuthorization(options =>
 {
     options.FallbackPolicy = new AuthorizationPolicyBuilder()
