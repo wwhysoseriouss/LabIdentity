@@ -4,6 +4,7 @@ using LabIdentity.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Localization;
 
 namespace LabIdentity.Controllers;
 
@@ -11,13 +12,16 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly LabSettings _settings;
+    private readonly IStringLocalizer<HomeController> _localizer;
 
     public HomeController(
-        ILogger<HomeController> logger,
-        LabSettings settings)
+    ILogger<HomeController> logger,
+    LabSettings settings,
+    IStringLocalizer<HomeController> localizer)
     {
         _logger = logger;
         _settings = settings;
+        _localizer = localizer;
     }
 
     public override void OnActionExecuting(ActionExecutingContext context)
@@ -31,6 +35,9 @@ public class HomeController : Controller
     [AllowAnonymous]
     public IActionResult Index()
     {
+        ViewData["WelcomeMessage"] = _localizer["WelcomeMessage"].Value;
+        ViewData["PollsDescription"] = _localizer["PollsDescription"].Value;
+
         return View();
     }
 

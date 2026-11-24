@@ -1,0 +1,35 @@
+﻿@using System.Globalization
+
+<form asp-controller="Language"
+      asp-action="SetLanguage"
+      asp-area=""
+      method="post"
+      class="d-flex align-items-center gap-2">
+
+    <input type="hidden"
+           name="returnUrl"
+           value="@(Context.Request.PathBase.ToString() + Context.Request.Path.ToString())" />
+
+    <span>@CultureInfo.CurrentUICulture.Name</span>
+
+    <button type="submit"
+            name="culture"
+            value="uk-UA"
+            class="btn btn-sm btn-outline-secondary">
+        Українська
+    </button>
+
+    <button type="submit"
+            name="culture"
+            value="en-US"
+            class="btn btn-sm btn-outline-secondary">
+        English
+    </button>
+
+    <button type="submit"
+            name="culture"
+            value="pl-PL"
+            class="btn btn-sm btn-outline-secondary">
+        Polski
+    </button>
+</form>

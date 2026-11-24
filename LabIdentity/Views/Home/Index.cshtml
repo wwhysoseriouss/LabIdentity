@@ -1,8 +1,48 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+@inject IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["PageTitle"].Value;
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1>@ViewData["WelcomeMessage"]</h1>
+    <p>@ViewData["PollsDescription"]</p>
 </div>
+
+<section class="mt-4">
+    <h2>@Localizer["AboutTitle"]</h2>
+    <p>@Localizer["AboutText"]</p>
+</section>
+
+@{
+    var exampleDate = new DateTime(2026, 11, 24);
+    decimal exampleNumber = 1234567.89m;
+    decimal exampleAmount = 1250.50m;
+
+    var culture = CultureInfo.CurrentCulture;
+}
+
+<section class="mt-4">
+    <h2>@Localizer["FormattingTitle"]</h2>
+
+    <dl class="row">
+        <dt class="col-sm-4">@Localizer["CultureLabel"]</dt>
+        <dd class="col-sm-8">@culture.Name</dd>
+
+        <dt class="col-sm-4">@Localizer["DateLabel"]</dt>
+        <dd class="col-sm-8">
+            @exampleDate.ToString("D", culture)
+        </dd>
+
+        <dt class="col-sm-4">@Localizer["NumberLabel"]</dt>
+        <dd class="col-sm-8">
+            @exampleNumber.ToString("N2", culture)
+        </dd>
+
+        <dt class="col-sm-4">@Localizer["CurrencyLabel"]</dt>
+        <dd class="col-sm-8">
+            @exampleAmount.ToString("C2", culture)
+        </dd>
+    </dl>
+</section>
