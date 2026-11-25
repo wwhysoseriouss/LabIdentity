@@ -1,4 +1,6 @@
-﻿using LabData.Repositories.Interfaces;
+﻿using LabData.Data;
+using LabData.Repositories.Interfaces;
+using LabIdentity.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,10 +16,28 @@ public class UsersController : Controller
         _userRepository = userRepository;
     }
 
-    public async Task<IActionResult> Index()
+    [HttpGet]
+    public async Task<IActionResult> Index([FromQuery] int page = 1)
     {
-        var users = await _userRepository.GetAllAsync();
+        const int pageSize = 5;
 
-        return View(users);
+        var totalCount = await _userRepository.CountAsync();
+
+        var pagination = new PaginationViewModel(
+            totalCount,
+            page,
+            pageSize);
+
+        var users = await _userRepository.GetPageAsync(
+            pagination.PageNumber,
+            pagination.PageSize);
+
+        var model = new PagedListViewModel<ApplicationUser>
+        {
+            Items = users,
+            Pagination = pagination
+        };
+
+        return View(model);
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LabData.Data.ApplicationUser>
+﻿@model LabIdentity.ViewModels.PagedListViewModel<LabData.Data.ApplicationUser>
 
 @{
     ViewData["Title"] = T["Users"].Value;
@@ -14,7 +14,7 @@
     </a>
 </p>
 
-@if (!Model.Any())
+@if (!Model.Items.Any())
 {
     <p>@T["NoUsers"]</p>
 }
@@ -30,7 +30,7 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var user in Model)
+                @foreach (var user in Model.Items)
                 {
                     <tr>
                         <td>@user.Email</td>
@@ -42,3 +42,5 @@ else
         </table>
     </div>
 }
+
+<partial name="_Pagination" model="Model.Pagination" />

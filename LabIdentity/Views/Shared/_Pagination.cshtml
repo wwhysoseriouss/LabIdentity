@@ -1,0 +1,122 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.WebUtilities
+@model LabIdentity.ViewModels.PaginationViewModel
+
+@{
+    var path = Context.Request.PathBase
+        .Add(Context.Request.Path)
+        .ToString();
+
+    // Зберігаємо пошук та інші параметри, крім номера сторінки.
+    var parameters = Context.Request.Query.Where(parameter =>
+        !string.Equals(
+            parameter.Key,
+            "page",
+            StringComparison.OrdinalIgnoreCase));
+
+    var baseUrl = QueryHelpers.AddQueryString(path, parameters);
+
+    string PageUrl(int pageNumber)
+    {
+        return QueryHelpers.AddQueryString(
+            baseUrl,
+            "page",
+            pageNumber.ToString(CultureInfo.InvariantCulture));
+    }
+
+    var startPage = Math.Max(1, Model.PageNumber - 2);
+    var endPage = Math.Min(Model.TotalPages, Model.PageNumber + 2);
+}
+
+@if (Model.TotalCount > 0)
+{
+    <p class="text-muted">
+        @T["PageSummary",
+        Model.PageNumber,
+        Model.TotalPages,
+        Model.TotalCount]
+</p>
+
+@if (Model.TotalPages > 1)
+    {
+        <nav aria-label="@T["PageNavigation"]">
+            <ul class="pagination flex-wrap">
+                @if (Model.HasPreviousPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@PageUrl(1)">
+                            @T["FirstPage"]
+                        </a>
+                    </li>
+
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="@PageUrl(Model.PageNumber - 1)">
+                            @T["PreviousPage"]
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">@T["FirstPage"]</span>
+                    </li>
+
+                    <li class="page-item disabled">
+                        <span class="page-link">@T["PreviousPage"]</span>
+                    </li>
+                }
+
+                @for (var pageNumber = startPage;
+                        pageNumber <= endPage;
+                        pageNumber++)
+                {
+                    if (pageNumber == Model.PageNumber)
+                    {
+                        <li class="page-item active">
+                            <span class="page-link" aria-current="page">
+                                @pageNumber
+                            </span>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="@PageUrl(pageNumber)">
+                                @pageNumber
+                            </a>
+                        </li>
+                    }
+                }
+
+                @if (Model.HasNextPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="@PageUrl(Model.PageNumber + 1)">
+                            @T["NextPage"]
+                        </a>
+                    </li>
+
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="@PageUrl(Model.TotalPages)">
+                            @T["LastPage"]
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">@T["NextPage"]</span>
+                    </li>
+
+                    <li class="page-item disabled">
+                        <span class="page-link">@T["LastPage"]</span>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+}

@@ -216,6 +216,9 @@
   <data name="FirstName" xml:space="preserve">
     <value>Imię</value>
   </data>
+  <data name="FirstPage" xml:space="preserve">
+    <value>Pierwsza</value>
+  </data>
   <data name="Forum" xml:space="preserve">
     <value>Forum</value>
   </data>
@@ -228,6 +231,9 @@
   <data name="LastName" xml:space="preserve">
     <value>Nazwisko</value>
   </data>
+  <data name="LastPage" xml:space="preserve">
+    <value>Ostatnia</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>Zaloguj się</value>
   </data>
@@ -236,6 +242,9 @@
   </data>
   <data name="MaxOptionsFooter" xml:space="preserve">
     <value>Do {0} opcji odpowiedzi</value>
+  </data>
+  <data name="NextPage" xml:space="preserve">
+    <value>Następna</value>
   </data>
   <data name="NoPollsFound" xml:space="preserve">
     <value>Nie znaleziono głosowań.</value>
@@ -260,6 +269,12 @@
   </data>
   <data name="OptionsHint" xml:space="preserve">
     <value>Wpisz każdą opcję w osobnym wierszu. Opcje nie mogą się powtarzać.</value>
+  </data>
+  <data name="PageNavigation" xml:space="preserve">
+    <value>Nawigacja stron</value>
+  </data>
+  <data name="PageSummary" xml:space="preserve">
+    <value>Strona {0} z {1}. Łączna liczba rekordów: {2}.</value>
   </data>
   <data name="ParticipationCode" xml:space="preserve">
     <value>Kod uczestnictwa (opcjonalnie)</value>
@@ -302,6 +317,9 @@
   </data>
   <data name="PremiumDescription" xml:space="preserve">
     <value>Ta strona jest dostępna dla użytkowników mających co najmniej 100 godzin pracy.</value>
+  </data>
+  <data name="PreviousPage" xml:space="preserve">
+    <value>Poprzednia</value>
   </data>
   <data name="Privacy" xml:space="preserve">
     <value>Prywatność</value>

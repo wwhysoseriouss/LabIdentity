@@ -216,6 +216,9 @@
   <data name="FirstName" xml:space="preserve">
     <value>Ім’я</value>
   </data>
+  <data name="FirstPage" xml:space="preserve">
+    <value>Перша</value>
+  </data>
   <data name="Forum" xml:space="preserve">
     <value>Форум</value>
   </data>
@@ -228,6 +231,9 @@
   <data name="LastName" xml:space="preserve">
     <value>Прізвище</value>
   </data>
+  <data name="LastPage" xml:space="preserve">
+    <value>Остання</value>
+  </data>
   <data name="Login" xml:space="preserve">
     <value>Увійти</value>
   </data>
@@ -236,6 +242,9 @@
   </data>
   <data name="MaxOptionsFooter" xml:space="preserve">
     <value>До {0} варіантів відповіді</value>
+  </data>
+  <data name="NextPage" xml:space="preserve">
+    <value>Наступна</value>
   </data>
   <data name="NoPollsFound" xml:space="preserve">
     <value>Голосувань не знайдено.</value>
@@ -260,6 +269,12 @@
   </data>
   <data name="OptionsHint" xml:space="preserve">
     <value>Введіть кожен варіант з нового рядка. Варіанти не повинні повторюватися.</value>
+  </data>
+  <data name="PageNavigation" xml:space="preserve">
+    <value>Навігація сторінками</value>
+  </data>
+  <data name="PageSummary" xml:space="preserve">
+    <value>Сторінка {0} із {1}. Усього записів: {2}.</value>
   </data>
   <data name="ParticipationCode" xml:space="preserve">
     <value>Код участі (необов’язково)</value>
@@ -302,6 +317,9 @@
   </data>
   <data name="PremiumDescription" xml:space="preserve">
     <value>Ця сторінка доступна користувачам, які мають щонайменше 100 робочих годин.</value>
+  </data>
+  <data name="PreviousPage" xml:space="preserve">
+    <value>Попередня</value>
   </data>
   <data name="Privacy" xml:space="preserve">
     <value>Конфіденційність</value>

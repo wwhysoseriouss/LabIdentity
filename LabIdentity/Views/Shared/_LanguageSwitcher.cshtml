@@ -1,4 +1,23 @@
 ﻿@using System.Globalization
+@using Microsoft.AspNetCore.WebUtilities
+
+@{
+    var path = Context.Request.PathBase
+        .Add(Context.Request.Path)
+        .ToString();
+
+    var parameters = Context.Request.Query.Where(parameter =>
+        !string.Equals(
+            parameter.Key,
+            "culture",
+            StringComparison.OrdinalIgnoreCase)
+        && !string.Equals(
+            parameter.Key,
+            "ui-culture",
+            StringComparison.OrdinalIgnoreCase));
+
+    var returnUrl = QueryHelpers.AddQueryString(path, parameters);
+}
 
 <form asp-controller="Language"
       asp-action="SetLanguage"
@@ -8,7 +27,7 @@
 
     <input type="hidden"
            name="returnUrl"
-           value="@(Context.Request.PathBase.ToString() + Context.Request.Path.ToString())" />
+           value="@returnUrl" />
 
     <span>@CultureInfo.CurrentUICulture.Name</span>
 

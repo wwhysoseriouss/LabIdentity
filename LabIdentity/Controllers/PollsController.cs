@@ -28,26 +28,47 @@ public class PollsController : Controller
 
     // Список голосувань і пошук.
     [HttpGet]
-    public async Task<IActionResult> Index([FromQuery] string? search)
+    public async Task<IActionResult> Index(
+    [FromQuery] string? search,
+    [FromQuery] int page = 1)
     {
+        const int pageSize = 5;
+
+        var searchText = search?.Trim();
+
         var query = _db.Polls.AsNoTracking();
 
-        if (!string.IsNullOrWhiteSpace(search))
+        if (!string.IsNullOrWhiteSpace(searchText))
         {
-            var searchText = search.Trim();
-
             query = query.Where(poll =>
                 poll.Question.Contains(searchText));
         }
 
+        // Кількість записів після застосування пошуку.
+        var totalCount = await query.CountAsync();
+
+        // Обчислюємо допустимий номер сторінки.
+        var pagination = new PaginationViewModel(
+            totalCount,
+            page,
+            pageSize);
+
+        // Завантажуємо лише поточну сторінку.
         var polls = await query
             .OrderByDescending(poll => poll.OpensAtUtc)
             .ThenByDescending(poll => poll.Id)
+            .Skip((pagination.PageNumber - 1) * pagination.PageSize)
+            .Take(pagination.PageSize)
             .ToListAsync();
 
-        ViewData["Search"] = search;
+        var model = new PagedListViewModel<Poll>
+        {
+            Items = polls,
+            Pagination = pagination,
+            Search = searchText
+        };
 
-        return View(polls);
+        return View(model);
     }
 
     // Перегляд голосування.
