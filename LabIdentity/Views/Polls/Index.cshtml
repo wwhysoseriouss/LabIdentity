@@ -1,0 +1,83 @@
+﻿@model IEnumerable<LabData.Models.Poll>
+
+@{
+    ViewData["Title"] = "Голосування";
+    var now = DateTimeOffset.UtcNow;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (TempData["Success"] is string success)
+{
+    <div class="alert alert-success" role="alert">
+        @success
+    </div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Створити голосування
+    </a>
+</p>
+
+<form asp-action="Index" method="get" class="d-flex gap-2 mb-3">
+    <input type="search"
+           name="search"
+           value="@ViewData["Search"]"
+           class="form-control"
+           placeholder="Пошук за питанням" />
+
+    <button type="submit" class="btn btn-outline-primary">
+        Знайти
+    </button>
+
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        Скинути
+    </a>
+</form>
+
+@if (!Model.Any())
+{
+    <p>Голосувань не знайдено.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Питання</th>
+                <th>Статус</th>
+                <th>Завершення (UTC)</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var poll in Model)
+            {
+                var status = now < poll.OpensAtUtc
+                ? "Ще не почалося"
+                : poll.ClosesAtUtc.HasValue
+                && now >= poll.ClosesAtUtc.Value
+                ? "Завершено"
+                : "Активне";
+
+                <tr>
+                    <td>@poll.Question</td>
+                    <td>@status</td>
+                    <td>
+                        @(poll.ClosesAtUtc.HasValue
+                                        ? poll.ClosesAtUtc.Value.UtcDateTime.ToString("g")
+                                        : "Без обмеження")
+            </td>
+            <td>
+                <a asp-action="Details"
+                   asp-route-id="@poll.Id"
+                   class="btn btn-sm btn-outline-primary">
+                    Переглянути
+                </a>
+            </td>
+        </tr>
+                }
+        </tbody>
+    </table>
+}

@@ -1,0 +1,48 @@
+﻿@model LabData.Models.Poll
+
+@{
+    ViewData["Title"] = "Видалення голосування";
+    var hasVotes = Model.Votes.Any();
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h2>@Model.Question</h2>
+
+@if (!string.IsNullOrWhiteSpace(Model.Description))
+{
+    <p>@Model.Description</p>
+}
+
+<p>Кількість варіантів: @Model.Options.Count</p>
+<p>Кількість голосів: @Model.Votes.Count</p>
+
+@if (hasVotes)
+{
+    <div class="alert alert-warning">
+        Видалення недоступне: голосування вже має голоси.
+    </div>
+}
+else
+{
+    <div class="alert alert-danger">
+        Ви впевнені, що хочете видалити це голосування
+        разом із його варіантами відповіді?
+    </div>
+
+    <form asp-controller="Polls"
+          asp-action="Delete"
+          asp-route-id="@Model.Id"
+          method="post">
+
+        <button type="submit" class="btn btn-danger">
+            Підтвердити видалення
+        </button>
+    </form>
+}
+
+<a asp-action="Details"
+   asp-route-id="@Model.Id"
+   class="btn btn-secondary mt-3">
+    Скасувати
+</a>

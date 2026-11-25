@@ -1,0 +1,98 @@
+﻿@model LabIdentity.ViewModels.PollFormViewModel
+
+@{
+    var isEdit = ViewContext.RouteData.Values["action"]?
+        .ToString() == "Edit";
+
+    var actionName = isEdit ? "Edit" : "Create";
+
+    ViewData["Title"] = isEdit
+        ? "Редагування голосування"
+        : "Створення голосування";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-controller="Polls"
+              asp-action="@actionName"
+              asp-route-id="@ViewContext.RouteData.Values["id"]"
+              method="post"
+              novalidate>
+
+            <div asp-validation-summary="All"
+                 class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Question"
+                       class="form-label"></label>
+
+                <input asp-for="Question"
+                       class="form-control" />
+
+                <span asp-validation-for="Question"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Description"
+                       class="form-label"></label>
+
+                <textarea asp-for="Description"
+                          class="form-control"
+                          rows="3"></textarea>
+
+                <span asp-validation-for="Description"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DurationHours"
+                       class="form-label"></label>
+
+                <input asp-for="DurationHours"
+                       class="form-control" />
+
+                <span asp-validation-for="DurationHours"
+                      class="text-danger"></span>
+
+                <div class="form-text">
+                    Тривалість відраховується від початку голосування.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="OptionsText"
+                       class="form-label"></label>
+
+                <textarea asp-for="OptionsText"
+                          class="form-control"
+                          rows="6"
+                          placeholder="Перший варіант&#10;Другий варіант"></textarea>
+
+                <span asp-validation-for="OptionsText"
+                      class="text-danger"></span>
+
+                <div class="form-text">
+                    Введіть кожен варіант з нового рядка.
+                    Варіанти не повинні повторюватися.
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Зберегти
+            </button>
+
+            <a asp-controller="Polls"
+               asp-action="Index"
+               class="btn btn-secondary">
+                До списку
+            </a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

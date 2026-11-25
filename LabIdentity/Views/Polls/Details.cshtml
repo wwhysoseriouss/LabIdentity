@@ -1,0 +1,168 @@
+﻿@using System.Security.Claims
+@model LabData.Models.Poll
+
+@{
+    ViewData["Title"] = "Перегляд голосування";
+
+    var now = DateTimeOffset.UtcNow;
+
+    var status = now < Model.OpensAtUtc
+        ? "Ще не почалося"
+        : Model.ClosesAtUtc.HasValue
+            && now >= Model.ClosesAtUtc.Value
+            ? "Завершено"
+            : "Активне";
+
+    var totalVotes = Model.Votes.Count;
+    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+    var alreadyVoted = Model.Votes.Any(
+        vote => vote.VoterId == userId);
+
+    var isActive = now >= Model.OpensAtUtc
+        && (!Model.ClosesAtUtc.HasValue
+            || now < Model.ClosesAtUtc.Value);
+}
+
+<h1>@Model.Question</h1>
+
+@if (TempData["Error"] is string error)
+{
+    <div class="alert alert-danger" role="alert">
+        @error
+    </div>
+}
+
+@if (TempData["Success"] is string success)
+{
+    <div class="alert alert-success" role="alert">
+        @success
+    </div>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.Description))
+{
+    <p>@Model.Description</p>
+}
+
+<dl class="row">
+    <dt class="col-sm-3">Статус</dt>
+    <dd class="col-sm-9">@status</dd>
+
+    <dt class="col-sm-3">Початок (UTC)</dt>
+    <dd class="col-sm-9">
+        @Model.OpensAtUtc.UtcDateTime.ToString("g")
+    </dd>
+
+    <dt class="col-sm-3">Завершення (UTC)</dt>
+    <dd class="col-sm-9">
+        @(Model.ClosesAtUtc.HasValue
+                ? Model.ClosesAtUtc.Value.UtcDateTime.ToString("g")
+                : "Без обмеження")
+    </dd>
+
+    <dt class="col-sm-3">Кількість голосів</dt>
+    <dd class="col-sm-9">@totalVotes</dd>
+</dl>
+
+@if (alreadyVoted)
+{
+    <div class="alert alert-info">
+        Ви вже проголосували в цьому голосуванні.
+    </div>
+}
+else if (!isActive)
+{
+    <div class="alert alert-secondary">
+        Подання голосів зараз недоступне.
+    </div>
+}
+else
+{
+    <h2>Ваш вибір</h2>
+
+    <form asp-controller="Votes"
+          asp-action="Cast"
+          method="post"
+          class="mb-4">
+
+        <input type="hidden"
+               name="pollId"
+               value="@Model.Id" />
+
+        @foreach (var option in Model.Options.OrderBy(o => o.DisplayOrder))
+        {
+            <div class="form-check mb-2">
+                <input type="radio"
+                       class="form-check-input"
+                       name="pollOptionId"
+                       id="option-@option.Id"
+                       value="@option.Id"
+                       required />
+
+                <label class="form-check-label"
+                       for="option-@option.Id">
+                    @option.Text
+                </label>
+            </div>
+        }
+
+        <button type="submit" class="btn btn-success mt-2">
+            Проголосувати
+        </button>
+    </form>
+}
+
+<h2>Варіанти відповіді та результати</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Варіант</th>
+            <th>Голосів</th>
+            <th>Частка</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var option in Model.Options.OrderBy(o => o.DisplayOrder))
+        {
+            var voteCount = Model.Votes.Count(
+            vote => vote.PollOptionId == option.Id);
+
+            var percentage = totalVotes == 0
+            ? 0m
+            : voteCount * 100m / totalVotes;
+
+            <tr>
+                <td>@option.Text</td>
+                <td>@voteCount</td>
+                <td>@percentage.ToString("N1") %</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (totalVotes == 0)
+{
+    <a asp-action="Edit"
+       asp-route-id="@Model.Id"
+       class="btn btn-primary">
+        Редагувати
+    </a>
+
+    <a asp-action="Delete"
+       asp-route-id="@Model.Id"
+       class="btn btn-danger">
+        Видалити
+    </a>
+}
+else
+{
+    <p class="text-muted">
+        Редагування недоступне: голосування вже має голоси.
+    </p>
+}
+
+<a asp-action="Index" class="btn btn-secondary">
+    До списку
+</a>
