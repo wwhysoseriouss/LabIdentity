@@ -5,6 +5,7 @@ using LabIdentity.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace LabIdentity.Controllers;
 
@@ -13,16 +14,19 @@ public class PollsController : Controller
 {
     private readonly ApplicationDbContext _db;
     private readonly LabSettings _settings;
+    private readonly IStringLocalizer<SharedResource> _localizer;
 
     public PollsController(
         ApplicationDbContext db,
-        LabSettings settings)
+        LabSettings settings,
+        IStringLocalizer<SharedResource> localizer)
     {
         _db = db;
         _settings = settings;
+        _localizer = localizer;
     }
 
-    // Список голосувань і пошук за питанням.
+    // Список голосувань і пошук.
     [HttpGet]
     public async Task<IActionResult> Index([FromQuery] string? search)
     {
@@ -46,7 +50,7 @@ public class PollsController : Controller
         return View(polls);
     }
 
-    // Перегляд одного голосування.
+    // Перегляд голосування.
     [HttpGet]
     public async Task<IActionResult> Details([FromRoute] int id)
     {
@@ -71,7 +75,7 @@ public class PollsController : Controller
         return View("Form", new PollFormViewModel());
     }
 
-    // Обробка заповненої форми.
+    // Збереження нового голосування.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(PollFormViewModel model)
@@ -108,6 +112,7 @@ public class PollsController : Controller
             new { id = poll.Id });
     }
 
+    // Відкриття форми редагування.
     [HttpGet]
     public async Task<IActionResult> Edit([FromRoute] int id)
     {
@@ -126,8 +131,7 @@ public class PollsController : Controller
 
         if (hasVotes)
         {
-            TempData["Error"] =
-                "Не можна редагувати голосування, яке вже має голоси.";
+            TempData["Error"] = _localizer["PollEditBlocked"].Value;
 
             return RedirectToAction(nameof(Details), new { id });
         }
@@ -152,14 +156,16 @@ public class PollsController : Controller
         return View("Form", model);
     }
 
+    // Збереження змін.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(
-    [FromRoute] int id,
-    PollFormViewModel model)
+        [FromRoute] int id,
+        PollFormViewModel model)
     {
         await using var transaction = await _db.Database
-            .BeginTransactionAsync(System.Data.IsolationLevel.Serializable);
+            .BeginTransactionAsync(
+                System.Data.IsolationLevel.Serializable);
 
         var poll = await _db.Polls
             .Include(poll => poll.Options)
@@ -175,8 +181,7 @@ public class PollsController : Controller
 
         if (hasVotes)
         {
-            TempData["Error"] =
-                "Не можна редагувати голосування, яке вже має голоси.";
+            TempData["Error"] = _localizer["PollEditBlocked"].Value;
 
             return RedirectToAction(nameof(Details), new { id });
         }
@@ -195,7 +200,7 @@ public class PollsController : Controller
         {
             ModelState.AddModelError(
                 nameof(model.DurationHours),
-                "Збільште тривалість: дата завершення повинна бути в майбутньому.");
+                _localizer["PollEndMustBeFuture"].Value);
 
             return View("Form", model);
         }
@@ -204,11 +209,11 @@ public class PollsController : Controller
         poll.Description = model.Description?.Trim();
         poll.ClosesAtUtc = closesAtUtc;
 
-        // Прибираємо попередні варіанти.
+        // Видалення попередніх варіантів.
         _db.PollOptions.RemoveRange(poll.Options.ToList());
         poll.Options.Clear();
 
-        // Додаємо новий список варіантів.
+        // Створення нового списку варіантів.
         foreach (var item in options.Select((text, index) => new
         {
             Text = text,
@@ -225,7 +230,7 @@ public class PollsController : Controller
         await _db.SaveChangesAsync();
         await transaction.CommitAsync();
 
-        TempData["Success"] = "Зміни збережено.";
+        TempData["Success"] = _localizer["PollSaved"].Value;
 
         return RedirectToAction(nameof(Details), new { id });
     }
@@ -248,14 +253,15 @@ public class PollsController : Controller
         return View(poll);
     }
 
-    // Безпосереднє видалення.
+    // Видалення голосування.
     [HttpPost]
     [ActionName("Delete")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed([FromRoute] int id)
     {
         await using var transaction = await _db.Database
-            .BeginTransactionAsync(System.Data.IsolationLevel.Serializable);
+            .BeginTransactionAsync(
+                System.Data.IsolationLevel.Serializable);
 
         var poll = await _db.Polls
             .FirstOrDefaultAsync(poll => poll.Id == id);
@@ -270,8 +276,7 @@ public class PollsController : Controller
 
         if (hasVotes)
         {
-            TempData["Error"] =
-                "Не можна видалити голосування, яке вже має голоси.";
+            TempData["Error"] = _localizer["PollDeleteBlocked"].Value;
 
             return RedirectToAction(nameof(Details), new { id });
         }
@@ -281,12 +286,12 @@ public class PollsController : Controller
         await _db.SaveChangesAsync();
         await transaction.CommitAsync();
 
-        TempData["Success"] = "Голосування видалено.";
+        TempData["Success"] = _localizer["PollDeleted"].Value;
 
         return RedirectToAction(nameof(Index));
     }
 
-    // Розділення тексту на варіанти та перевірка правил.
+    // Спільні перевірки варіантів відповіді.
     private string[] ParseAndValidateOptions(string? optionsText)
     {
         var options = (optionsText ?? string.Empty)
@@ -301,14 +306,14 @@ public class PollsController : Controller
         {
             ModelState.AddModelError(
                 nameof(PollFormViewModel.OptionsText),
-                $"Вкажіть від 2 до {maxOptions} варіантів відповіді.");
+                _localizer["PollOptionsCountError", maxOptions].Value);
         }
 
         if (options.Any(option => option.Length > 200))
         {
             ModelState.AddModelError(
                 nameof(PollFormViewModel.OptionsText),
-                "Кожен варіант повинен містити не більше 200 символів.");
+                _localizer["PollOptionLengthError"].Value);
         }
 
         var uniqueCount = options
@@ -319,7 +324,7 @@ public class PollsController : Controller
         {
             ModelState.AddModelError(
                 nameof(PollFormViewModel.OptionsText),
-                "Варіанти відповіді не повинні повторюватися.");
+                _localizer["PollOptionsDuplicateError"].Value);
         }
 
         return options;

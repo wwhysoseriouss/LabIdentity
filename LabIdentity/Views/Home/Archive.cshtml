@@ -1,6 +1,13 @@
 ﻿@{
-    ViewData["Title"] = "Архів матеріалів";
+    ViewData["Title"] = T["Archive"].Value;
 }
 
-<h1>Архів матеріалів</h1>
-<p>Ця сторінка доступна підтвердженим клієнтам.</p>
+<h1>@ViewData["Title"]</h1>
+
+<p>@T["ArchiveDescription"]</p>
+
+<a asp-controller="Home"
+   asp-action="Index"
+   class="btn btn-secondary">
+    @T["Home"]
+</a>

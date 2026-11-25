@@ -1,6 +1,13 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = T["Privacy"].Value;
 }
+
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<p>@T["PrivacyDescription"]</p>
+
+<a asp-controller="Home"
+   asp-action="Index"
+   class="btn btn-secondary">
+    @T["Home"]
+</a>

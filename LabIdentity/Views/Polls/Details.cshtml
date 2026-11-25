@@ -2,18 +2,19 @@
 @model LabData.Models.Poll
 
 @{
-    ViewData["Title"] = "Перегляд голосування";
+    ViewData["Title"] = T["PollDetails"].Value;
 
     var now = DateTimeOffset.UtcNow;
 
-    var status = now < Model.OpensAtUtc
-        ? "Ще не почалося"
+    var statusKey = now < Model.OpensAtUtc
+        ? "NotStarted"
         : Model.ClosesAtUtc.HasValue
             && now >= Model.ClosesAtUtc.Value
-            ? "Завершено"
-            : "Активне";
+            ? "Finished"
+            : "Active";
 
     var totalVotes = Model.Votes.Count;
+
     var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
     var alreadyVoted = Model.Votes.Any(
@@ -46,40 +47,45 @@
 }
 
 <dl class="row">
-    <dt class="col-sm-3">Статус</dt>
-    <dd class="col-sm-9">@status</dd>
+    <dt class="col-sm-3">@T["Status"]</dt>
+    <dd class="col-sm-9">@T[statusKey]</dd>
 
-    <dt class="col-sm-3">Початок (UTC)</dt>
+    <dt class="col-sm-3">@T["OpensAtUtc"]</dt>
     <dd class="col-sm-9">
         @Model.OpensAtUtc.UtcDateTime.ToString("g")
     </dd>
 
-    <dt class="col-sm-3">Завершення (UTC)</dt>
+    <dt class="col-sm-3">@T["ClosesAtUtc"]</dt>
     <dd class="col-sm-9">
-        @(Model.ClosesAtUtc.HasValue
-                ? Model.ClosesAtUtc.Value.UtcDateTime.ToString("g")
-                : "Без обмеження")
+        @if (Model.ClosesAtUtc.HasValue)
+        {
+            @Model.ClosesAtUtc.Value.UtcDateTime.ToString("g")
+        }
+        else
+        {
+            @T["NoTimeLimit"]
+        }
     </dd>
 
-    <dt class="col-sm-3">Кількість голосів</dt>
+    <dt class="col-sm-3">@T["TotalVotes"]</dt>
     <dd class="col-sm-9">@totalVotes</dd>
 </dl>
 
 @if (alreadyVoted)
 {
     <div class="alert alert-info">
-        Ви вже проголосували в цьому голосуванні.
+        @T["AlreadyVotedInfo"]
     </div>
 }
 else if (!isActive)
 {
     <div class="alert alert-secondary">
-        Подання голосів зараз недоступне.
+        @T["VotingUnavailable"]
     </div>
 }
 else
 {
-    <h2>Ваш вибір</h2>
+    <h2>@T["YourChoice"]</h2>
 
     <form asp-controller="Votes"
           asp-action="Cast"
@@ -108,61 +114,63 @@ else
         }
 
         <button type="submit" class="btn btn-success mt-2">
-            Проголосувати
+            @T["Vote"]
         </button>
     </form>
 }
 
-<h2>Варіанти відповіді та результати</h2>
+<h2>@T["OptionsAndResults"]</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Варіант</th>
-            <th>Голосів</th>
-            <th>Частка</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var option in Model.Options.OrderBy(o => o.DisplayOrder))
-        {
-            var voteCount = Model.Votes.Count(
-            vote => vote.PollOptionId == option.Id);
-
-            var percentage = totalVotes == 0
-            ? 0m
-            : voteCount * 100m / totalVotes;
-
+<div class="table-responsive">
+    <table class="table">
+        <thead>
             <tr>
-                <td>@option.Text</td>
-                <td>@voteCount</td>
-                <td>@percentage.ToString("N1") %</td>
+                <th>@T["AnswerOption"]</th>
+                <th>@T["VoteCount"]</th>
+                <th>@T["VoteShare"]</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var option in Model.Options.OrderBy(o => o.DisplayOrder))
+            {
+                var voteCount = Model.Votes.Count(
+                vote => vote.PollOptionId == option.Id);
+
+                var percentage = totalVotes == 0
+                ? 0m
+                : voteCount * 100m / totalVotes;
+
+                <tr>
+                    <td>@option.Text</td>
+                    <td>@voteCount</td>
+                    <td>@percentage.ToString("N1") %</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 @if (totalVotes == 0)
 {
     <a asp-action="Edit"
        asp-route-id="@Model.Id"
        class="btn btn-primary">
-        Редагувати
+        @T["Edit"]
     </a>
 
     <a asp-action="Delete"
        asp-route-id="@Model.Id"
        class="btn btn-danger">
-        Видалити
+        @T["Delete"]
     </a>
 }
 else
 {
     <p class="text-muted">
-        Редагування недоступне: голосування вже має голоси.
+        @T["PollEditBlocked"]
     </p>
 }
 
 <a asp-action="Index" class="btn btn-secondary">
-    До списку
+    @T["BackToList"]
 </a>

@@ -4,6 +4,7 @@ using LabData.Data;
 using LabData.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using LabIdentity.ViewModels;
 
 namespace LabIdentity.Controllers;
 
@@ -15,12 +16,12 @@ public class PollDraftsController(
     [HttpGet]
     public IActionResult Create()
     {
-        return View("Form", new DraftForm());
+        return View("Form", new PollDraftFormViewModel());
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(DraftForm form)
+    public async Task<IActionResult> Create(PollDraftFormViewModel form)
     {
         if (!ModelState.IsValid)
         {
@@ -63,12 +64,12 @@ public class PollDraftsController(
             return Forbid();
         }
 
-        return View("Form", new DraftForm { Question = draft.Question });
+        return View("Form", new PollDraftFormViewModel { Question = draft.Question });
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit([FromRoute] int id, DraftForm form)
+    public async Task<IActionResult> Edit([FromRoute] int id, PollDraftFormViewModel form)
     {
         var draft = await db.PollDrafts.FindAsync(id);
 
@@ -93,12 +94,5 @@ public class PollDraftsController(
         await db.SaveChangesAsync();
 
         return RedirectToAction(nameof(Edit), new { id });
-    }
-
-    public sealed class DraftForm
-    {
-        [Required(ErrorMessage = "Введи питання.")]
-        [StringLength(200, ErrorMessage = "Питання має містити до 200 символів.")]
-        public string Question { get; set; } = string.Empty;
     }
 }

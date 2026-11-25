@@ -1,14 +1,17 @@
 ﻿@model LabIdentity.ViewModels.PollFormViewModel
 
 @{
-    var isEdit = ViewContext.RouteData.Values["action"]?
-        .ToString() == "Edit";
+    var actionName = ViewContext.RouteData.Values["action"]?
+        .ToString() ?? "Create";
 
-    var actionName = isEdit ? "Edit" : "Create";
+    var isEdit = string.Equals(
+        actionName,
+        "Edit",
+        StringComparison.OrdinalIgnoreCase);
 
-    ViewData["Title"] = isEdit
-        ? "Редагування голосування"
-        : "Створення голосування";
+    var pollId = ViewContext.RouteData.Values["id"];
+
+    ViewData["Title"] = T[isEdit ? "EditPoll" : "CreatePoll"].Value;
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -16,8 +19,8 @@
 <div class="row">
     <div class="col-md-8">
         <form asp-controller="Polls"
-              asp-action="@actionName"
-              asp-route-id="@ViewContext.RouteData.Values["id"]"
+              asp-action="@(isEdit ? "Edit" : "Create")"
+              asp-route-id="@pollId"
               method="post"
               novalidate>
 
@@ -25,8 +28,9 @@
                  class="text-danger"></div>
 
             <div class="mb-3">
-                <label asp-for="Question"
-                       class="form-label"></label>
+                <label asp-for="Question" class="form-label">
+                    @T["Question"]
+                </label>
 
                 <input asp-for="Question"
                        class="form-control" />
@@ -36,8 +40,9 @@
             </div>
 
             <div class="mb-3">
-                <label asp-for="Description"
-                       class="form-label"></label>
+                <label asp-for="Description" class="form-label">
+                    @T["Description"]
+                </label>
 
                 <textarea asp-for="Description"
                           class="form-control"
@@ -48,46 +53,48 @@
             </div>
 
             <div class="mb-3">
-                <label asp-for="DurationHours"
-                       class="form-label"></label>
+                <label asp-for="DurationHours" class="form-label">
+                    @T["DurationHours"]
+                </label>
 
                 <input asp-for="DurationHours"
-                       class="form-control" />
+                       class="form-control"
+                       aria-describedby="durationHint" />
 
                 <span asp-validation-for="DurationHours"
                       class="text-danger"></span>
 
-                <div class="form-text">
-                    Тривалість відраховується від початку голосування.
+                <div id="durationHint" class="form-text">
+                    @T["DurationHint"]
                 </div>
             </div>
 
             <div class="mb-3">
-                <label asp-for="OptionsText"
-                       class="form-label"></label>
+                <label asp-for="OptionsText" class="form-label">
+                    @T["AnswerOptions"]
+                </label>
 
                 <textarea asp-for="OptionsText"
                           class="form-control"
                           rows="6"
-                          placeholder="Перший варіант&#10;Другий варіант"></textarea>
+                          aria-describedby="optionsHint"></textarea>
 
                 <span asp-validation-for="OptionsText"
                       class="text-danger"></span>
 
-                <div class="form-text">
-                    Введіть кожен варіант з нового рядка.
-                    Варіанти не повинні повторюватися.
+                <div id="optionsHint" class="form-text">
+                    @T["OptionsHint"]
                 </div>
             </div>
 
             <button type="submit" class="btn btn-primary">
-                Зберегти
+                @T["Save"]
             </button>
 
             <a asp-controller="Polls"
                asp-action="Index"
                class="btn btn-secondary">
-                До списку
+                @T["BackToList"]
             </a>
         </form>
     </div>

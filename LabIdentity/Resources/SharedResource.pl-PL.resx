@@ -1,0 +1,384 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Actions" xml:space="preserve">
+    <value>Działania</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Aktywne</value>
+  </data>
+  <data name="Age" xml:space="preserve">
+    <value>Wiek</value>
+  </data>
+  <data name="AlreadyVotedInfo" xml:space="preserve">
+    <value>Już oddano głos w tym głosowaniu.</value>
+  </data>
+  <data name="AnswerOption" xml:space="preserve">
+    <value>Opcja</value>
+  </data>
+  <data name="AnswerOptions" xml:space="preserve">
+    <value>Opcje odpowiedzi</value>
+  </data>
+  <data name="Archive" xml:space="preserve">
+    <value>Archiwum materiałów</value>
+  </data>
+  <data name="ArchiveDescription" xml:space="preserve">
+    <value>Ta strona jest dostępna dla zweryfikowanych klientów.</value>
+  </data>
+  <data name="BackToList" xml:space="preserve">
+    <value>Powrót do listy</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Anuluj</value>
+  </data>
+  <data name="ClosesAtUtc" xml:space="preserve">
+    <value>Zakończenie (UTC)</value>
+  </data>
+  <data name="ConfirmDelete" xml:space="preserve">
+    <value>usunięcie</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Potwierdź hasło</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Utwórz</value>
+  </data>
+  <data name="CreateDraft" xml:space="preserve">
+    <value>Nowy szkic</value>
+  </data>
+  <data name="CreatePoll" xml:space="preserve">
+    <value>Utwórz głosowanie</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Usuń</value>
+  </data>
+  <data name="DeletePoll" xml:space="preserve">
+    <value>Usuwanie głosowania</value>
+  </data>
+  <data name="DeletePollConfirmation" xml:space="preserve">
+    <value>Czy na pewno chcesz usunąć to głosowanie wraz z opcjami odpowiedzi?</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Zobacz szczegóły</value>
+  </data>
+  <data name="DraftAuthorHint" xml:space="preserve">
+    <value>Tylko autor może edytować ten szkic.</value>
+  </data>
+  <data name="DurationHint" xml:space="preserve">
+    <value>Czas trwania jest liczony od rozpoczęcia głosowania.</value>
+  </data>
+  <data name="DurationHours" xml:space="preserve">
+    <value>Czas trwania głosowania, godziny</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edytuj</value>
+  </data>
+  <data name="EditDraft" xml:space="preserve">
+    <value>Edycja szkicu</value>
+  </data>
+  <data name="EditPoll" xml:space="preserve">
+    <value>Edycja głosowania</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Wystąpił błąd podczas przetwarzania żądania.</value>
+  </data>
+  <data name="ErrorHelp" xml:space="preserve">
+    <value>Spróbuj ponownie później. Jeśli problem się powtarza, przekaż administratorowi identyfikator żądania.</value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Błąd</value>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>Zakończone</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Imię</value>
+  </data>
+  <data name="Forum" xml:space="preserve">
+    <value>Forum</value>
+  </data>
+  <data name="ForumDescription" xml:space="preserve">
+    <value>Masz dostęp do forum.</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Strona główna</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Nazwisko</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Zaloguj się</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Wyloguj się</value>
+  </data>
+  <data name="MaxOptionsFooter" xml:space="preserve">
+    <value>Do {0} opcji odpowiedzi</value>
+  </data>
+  <data name="NoPollsFound" xml:space="preserve">
+    <value>Nie znaleziono głosowań.</value>
+  </data>
+  <data name="NoTimeLimit" xml:space="preserve">
+    <value>Bez ograniczenia czasu</value>
+  </data>
+  <data name="NotStarted" xml:space="preserve">
+    <value>Jeszcze nierozpoczęte</value>
+  </data>
+  <data name="NoUsers" xml:space="preserve">
+    <value>Nie ma jeszcze użytkowników.</value>
+  </data>
+  <data name="OpensAtUtc" xml:space="preserve">
+    <value>Rozpoczęcie (UTC)</value>
+  </data>
+  <data name="OptionsAndResults" xml:space="preserve">
+    <value>Opcje odpowiedzi i wyniki</value>
+  </data>
+  <data name="OptionsCount" xml:space="preserve">
+    <value>Liczba opcji</value>
+  </data>
+  <data name="OptionsHint" xml:space="preserve">
+    <value>Wpisz każdą opcję w osobnym wierszu. Opcje nie mogą się powtarzać.</value>
+  </data>
+  <data name="ParticipationCode" xml:space="preserve">
+    <value>Kod uczestnictwa (opcjonalnie)</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Hasło</value>
+  </data>
+  <data name="PollDeleteBlocked" xml:space="preserve">
+    <value>Nie można usunąć głosowania, które ma już głosy.</value>
+  </data>
+  <data name="PollDeleted" xml:space="preserve">
+    <value>Głosowanie zostało usunięte.</value>
+  </data>
+  <data name="PollDetails" xml:space="preserve">
+    <value>Szczegóły głosowania</value>
+  </data>
+  <data name="PollEditBlocked" xml:space="preserve">
+    <value>Nie można edytować głosowania, które ma już głosy.</value>
+  </data>
+  <data name="PollEndMustBeFuture" xml:space="preserve">
+    <value>Zwiększ czas trwania: zakończenie musi przypadać w przyszłości.</value>
+  </data>
+  <data name="PollOptionLengthError" xml:space="preserve">
+    <value>Każda opcja może zawierać maksymalnie 200 znaków.</value>
+  </data>
+  <data name="PollOptionsCountError" xml:space="preserve">
+    <value>Podaj od 2 do {0} opcji odpowiedzi.</value>
+  </data>
+  <data name="PollOptionsDuplicateError" xml:space="preserve">
+    <value>Opcje odpowiedzi nie mogą się powtarzać.</value>
+  </data>
+  <data name="Polls" xml:space="preserve">
+    <value>Głosowania</value>
+  </data>
+  <data name="PollSaved" xml:space="preserve">
+    <value>Zmiany zostały zapisane.</value>
+  </data>
+  <data name="Premium" xml:space="preserve">
+    <value>Premium</value>
+  </data>
+  <data name="PremiumDescription" xml:space="preserve">
+    <value>Ta strona jest dostępna dla użytkowników mających co najmniej 100 godzin pracy.</value>
+  </data>
+  <data name="Privacy" xml:space="preserve">
+    <value>Prywatność</value>
+  </data>
+  <data name="PrivacyDescription" xml:space="preserve">
+    <value>Ta strona jest przeznaczona na informacje o przetwarzaniu danych osobowych w aplikacji.</value>
+  </data>
+  <data name="Question" xml:space="preserve">
+    <value>Pytanie</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Zarejestruj się</value>
+  </data>
+  <data name="RegisterParticipant" xml:space="preserve">
+    <value>Rejestracja uczestnika</value>
+  </data>
+  <data name="RequestId" xml:space="preserve">
+    <value>Identyfikator żądania</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Wyczyść</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Zapisz</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Szukaj</value>
+  </data>
+  <data name="SearchPollsPlaceholder" xml:space="preserve">
+    <value>Szukaj według pytania</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ToggleNavigation" xml:space="preserve">
+    <value>Otwórz lub zamknij menu</value>
+  </data>
+  <data name="TotalVotes" xml:space="preserve">
+    <value>Liczba głosów</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Użytkownicy</value>
+  </data>
+  <data name="Vote" xml:space="preserve">
+    <value>Zagłosuj</value>
+  </data>
+  <data name="VoteChooseOption" xml:space="preserve">
+    <value>Wybierz opcję odpowiedzi.</value>
+  </data>
+  <data name="VoteConflict" xml:space="preserve">
+    <value>Dane były jednocześnie zmieniane. Spróbuj ponownie.</value>
+  </data>
+  <data name="VoteCount" xml:space="preserve">
+    <value>Głosy</value>
+  </data>
+  <data name="VoteDuplicate" xml:space="preserve">
+    <value>Powtórny głos nie został zapisany. Odśwież stronę.</value>
+  </data>
+  <data name="VoteFinished" xml:space="preserve">
+    <value>Głosowanie już się zakończyło.</value>
+  </data>
+  <data name="VoteInvalidOption" xml:space="preserve">
+    <value>Wybrana opcja nie należy do tego głosowania.</value>
+  </data>
+  <data name="VoteNotStarted" xml:space="preserve">
+    <value>Głosowanie jeszcze się nie rozpoczęło.</value>
+  </data>
+  <data name="VoteSaved" xml:space="preserve">
+    <value>Twój głos został zapisany.</value>
+  </data>
+  <data name="VoteShare" xml:space="preserve">
+    <value>Udział</value>
+  </data>
+  <data name="VotingUnavailable" xml:space="preserve">
+    <value>Głosowanie jest obecnie niedostępne.</value>
+  </data>
+  <data name="YourChoice" xml:space="preserve">
+    <value>Twój wybór</value>
+  </data>
+</root>

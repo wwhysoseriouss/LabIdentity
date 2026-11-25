@@ -1,7 +1,7 @@
 ﻿@model LabData.Models.Poll
 
 @{
-    ViewData["Title"] = "Видалення голосування";
+    ViewData["Title"] = T["DeletePoll"].Value;
     var hasVotes = Model.Votes.Any();
 }
 
@@ -14,20 +14,24 @@
     <p>@Model.Description</p>
 }
 
-<p>Кількість варіантів: @Model.Options.Count</p>
-<p>Кількість голосів: @Model.Votes.Count</p>
+<dl class="row">
+    <dt class="col-sm-4">@T["OptionsCount"]</dt>
+    <dd class="col-sm-8">@Model.Options.Count</dd>
+
+    <dt class="col-sm-4">@T["TotalVotes"]</dt>
+    <dd class="col-sm-8">@Model.Votes.Count</dd>
+</dl>
 
 @if (hasVotes)
 {
     <div class="alert alert-warning">
-        Видалення недоступне: голосування вже має голоси.
+        @T["PollDeleteBlocked"]
     </div>
 }
 else
 {
     <div class="alert alert-danger">
-        Ви впевнені, що хочете видалити це голосування
-        разом із його варіантами відповіді?
+        @T["DeletePollConfirmation"]
     </div>
 
     <form asp-controller="Polls"
@@ -36,7 +40,7 @@ else
           method="post">
 
         <button type="submit" class="btn btn-danger">
-            Підтвердити видалення
+            @T["ConfirmDelete"]
         </button>
     </form>
 }
@@ -44,5 +48,5 @@ else
 <a asp-action="Details"
    asp-route-id="@Model.Id"
    class="btn btn-secondary mt-3">
-    Скасувати
+    @T["Cancel"]
 </a>

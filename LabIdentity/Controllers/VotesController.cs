@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 
 namespace LabIdentity.Controllers;
 
@@ -12,10 +13,14 @@ namespace LabIdentity.Controllers;
 public class VotesController : Controller
 {
     private readonly ApplicationDbContext _db;
+    private readonly IStringLocalizer<SharedResource> _localizer;
 
-    public VotesController(ApplicationDbContext db)
+    public VotesController(
+        ApplicationDbContext db,
+        IStringLocalizer<SharedResource> localizer)
     {
         _db = db;
+        _localizer = localizer;
     }
 
     [HttpPost]
@@ -49,24 +54,18 @@ public class VotesController : Controller
 
             if (now < poll.OpensAtUtc)
             {
-                return VoteError(
-                    pollId,
-                    "Голосування ще не почалося.");
+                return VoteError(pollId, "VoteNotStarted");
             }
 
             if (poll.ClosesAtUtc.HasValue
                 && now >= poll.ClosesAtUtc.Value)
             {
-                return VoteError(
-                    pollId,
-                    "Голосування вже завершено.");
+                return VoteError(pollId, "VoteFinished");
             }
 
             if (!pollOptionId.HasValue)
             {
-                return VoteError(
-                    pollId,
-                    "Виберіть варіант відповіді.");
+                return VoteError(pollId, "VoteChooseOption");
             }
 
             var optionExists = await _db.PollOptions.AnyAsync(
@@ -75,9 +74,7 @@ public class VotesController : Controller
 
             if (!optionExists)
             {
-                return VoteError(
-                    pollId,
-                    "Вибраний варіант не належить цьому голосуванню.");
+                return VoteError(pollId, "VoteInvalidOption");
             }
 
             var alreadyVoted = await _db.Votes.AnyAsync(
@@ -86,9 +83,7 @@ public class VotesController : Controller
 
             if (alreadyVoted)
             {
-                return VoteError(
-                    pollId,
-                    "Ви вже проголосували в цьому голосуванні.");
+                return VoteError(pollId, "AlreadyVotedInfo");
             }
 
             var vote = new Vote
@@ -104,7 +99,7 @@ public class VotesController : Controller
             await _db.SaveChangesAsync();
             await transaction.CommitAsync();
 
-            TempData["Success"] = "Ваш голос зараховано.";
+            TempData["Success"] = _localizer["VoteSaved"].Value;
 
             return RedirectToAction(
                 "Details",
@@ -115,29 +110,23 @@ public class VotesController : Controller
             when (exception.InnerException is SqlException sql
                 && (sql.Number is 2601 or 2627))
         {
-            return VoteError(
-                pollId,
-                "Повторний голос не збережено. Оновіть сторінку.");
+            return VoteError(pollId, "VoteDuplicate");
         }
         catch (DbUpdateException exception)
             when (exception.InnerException is SqlException sql
                 && sql.Number == 1205)
         {
-            return VoteError(
-                pollId,
-                "Дані одночасно змінювалися. Спробуйте ще раз.");
+            return VoteError(pollId, "VoteConflict");
         }
         catch (SqlException exception) when (exception.Number == 1205)
         {
-            return VoteError(
-                pollId,
-                "Дані одночасно змінювалися. Спробуйте ще раз.");
+            return VoteError(pollId, "VoteConflict");
         }
     }
 
-    private IActionResult VoteError(int pollId, string message)
+    private IActionResult VoteError(int pollId, string resourceKey)
     {
-        TempData["Error"] = message;
+        TempData["Error"] = _localizer[resourceKey].Value;
 
         return RedirectToAction(
             "Details",

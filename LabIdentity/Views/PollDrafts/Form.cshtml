@@ -1,18 +1,56 @@
-﻿@model LabIdentity.Controllers.PollDraftsController.DraftForm
+﻿@model LabIdentity.ViewModels.PollDraftFormViewModel
 
 @{
-    var isEdit = ViewContext.RouteData.Values["action"]?.ToString() == "Edit";
-    ViewData["Title"] = isEdit ? "Редагування чернетки" : "Нова чернетка";
+    var isEdit = string.Equals(
+        ViewContext.RouteData.Values["action"]?.ToString(),
+        "Edit",
+        StringComparison.OrdinalIgnoreCase);
+
+    var draftId = ViewContext.RouteData.Values["id"];
+
+    ViewData["Title"] = T[isEdit ? "EditDraft" : "CreateDraft"].Value;
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<form method="post" asp-antiforgery="true">
-    <div class="mb-3">
-        <label asp-for="Question">Питання голосування</label>
-        <input asp-for="Question" class="form-control" />
-        <span asp-validation-for="Question" class="text-danger"></span>
-    </div>
+<p class="text-muted">@T["DraftAuthorHint"]</p>
 
-    <button type="submit" class="btn btn-primary">Зберегти</button>
-</form>
+<div class="row">
+    <div class="col-md-8">
+        <form asp-controller="PollDrafts"
+              asp-action="@(isEdit ? "Edit" : "Create")"
+              asp-route-id="@draftId"
+              method="post"
+              novalidate>
+
+            <div asp-validation-summary="All"
+                 class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Question" class="form-label">
+                    @T["Question"]
+                </label>
+
+                <input asp-for="Question"
+                       class="form-control" />
+
+                <span asp-validation-for="Question"
+                      class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                @T["Save"]
+            </button>
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="btn btn-secondary">
+                @T["Home"]
+            </a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
